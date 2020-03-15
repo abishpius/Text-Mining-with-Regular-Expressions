@@ -1,0 +1,25 @@
+#!/usr/bin/python3/
+import sys
+import re
+import requests, re
+
+# Take arguement and parse
+protein = sys.argv[1]
+parse = 'http://www.rcsb.org/pdb/rest/ligandInfo?structureId='+protein
+file = requests.get(parse)
+
+# Obtain Ligand Names
+x = re.findall(r'chemicalID="(...?)"',file.text, re.DOTALL)
+for i in list(range(len(x))):
+    print(x[i])
+
+# Obtain Ligand ID and Ligand Chemical Name
+y = re.findall(r'Name>(.+?)<',file.text, re.DOTALL)
+chem_name = []
+for i in list(range(len(y))):
+    if i%2 == 0:
+        chem_name.append(y[i])
+    else:
+        pass
+for i in list(range(len(x))):
+    print(x[i],chem_name[i])
